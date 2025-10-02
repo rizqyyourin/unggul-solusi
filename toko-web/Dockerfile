@@ -13,8 +13,8 @@ RUN npm install
 # Copy application files
 COPY . .
 
-# Copy and setup entrypoint script
-RUN chmod +x docker-entrypoint.sh
+# Fix line endings and make entrypoint executable
+RUN sed -i 's/\r$//' docker-entrypoint.sh && chmod +x docker-entrypoint.sh
 
 # Expose port 5173 (Vite default)
 EXPOSE 5173
