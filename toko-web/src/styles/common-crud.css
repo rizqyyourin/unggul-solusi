@@ -1,0 +1,385 @@
+/* Common CRUD Page Styles */
+
+/* Action buttons alignment fix */
+.ant-table-tbody > tr > td .ant-space {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 4px !important;
+  flex-wrap: nowrap !important;
+}
+
+.ant-table-tbody > tr > td .ant-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  vertical-align: middle !important;
+  line-height: 1 !important;
+}
+
+/* Mobile responsive for all data table pages */
+@media (max-width: 768px) {
+  /* Card header actions responsive */
+  .data-table-actions {
+    width: 100%;
+  }
+
+  .data-table-actions .ant-space {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  /* Hide text in buttons on mobile, keep icons only */
+  .data-table-actions .add-text,
+  .data-table-actions .export-text {
+    display: none;
+  }
+  
+  /* Ensure card header wraps properly */
+  .ant-card-head-title {
+    overflow: visible !important;
+    white-space: normal !important;
+}
+  
+  .ant-card-extra {
+    margin-left: 0 !important;
+    margin-top: 8px;
+  }
+  
+  /* Fix pagination on mobile */
+  .ant-pagination {
+    text-align: center !important;
+    justify-content: center !important;
+  }
+  
+  .ant-pagination-total-text {
+    display: block !important;
+    text-align: center !important;
+    margin-bottom: 8px !important;
+    width: 100% !important;
+    order: -1 !important;
+  }
+  
+  .ant-pagination-options {
+    display: inline-block !important;
+    margin: 0 8px !important;
+  }
+  
+  .ant-pagination-options-size-changer {
+    display: inline-block !important;
+    min-width: auto !important;
+  }
+  
+  /* Ensure pagination elements are visible */
+  .ant-pagination li {
+    display: inline-block !important;
+  }
+  
+  .ant-pagination-prev,
+  .ant-pagination-next {
+    display: inline-block !important;
+  }
+}
+
+/* Action column specific styling */
+.ant-table-column-title {
+  text-align: center !important;
+}
+
+.ant-table td[data-column-key="action"], 
+.ant-table th[data-column-key="action"] {
+  text-align: center !important;
+  vertical-align: middle !important;
+  padding: 12px 8px !important;
+}
+
+.ant-table .ant-table-cell {
+  vertical-align: middle !important;
+  text-align: left !important;
+}
+
+.ant-table .ant-table-thead > tr > th {
+  text-align: left !important;
+  vertical-align: middle !important;
+  padding: 12px 8px !important;
+}
+
+/* Ensure action buttons are properly aligned */
+.ant-table-tbody .ant-table-cell .ant-space-item {
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.ant-table-tbody .ant-table-cell .ant-btn {
+  height: 24px !important;
+  min-height: 24px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0px 7px !important;
+  font-size: 12px !important;
+  line-height: 1.5715 !important;
+  margin: 0 2px !important;
+}
+
+.ant-table-tbody .ant-table-cell .ant-btn-sm {
+  height: 24px !important;
+  min-height: 24px !important;
+  padding: 0px 7px !important;
+  font-size: 12px !important;
+}
+
+
+/* Smaller mobile devices */
+@media (max-width: 480px) {
+  .ant-card-head {
+    padding: 12px 16px !important;
+  }
+  
+  .ant-card-body {
+    padding: 16px !important;
+  }
+  
+  .data-table-actions .ant-btn {
+    min-width: 36px;
+    padding: 4px 8px;
+  }
+}
+
+/* Ensure pagination dropdown is always visible on mobile */
+@media (max-width: 768px) {
+  .ant-pagination-options-size-changer {
+    display: inline-block !important;
+    visibility: visible !important;
+  }
+  
+  .ant-pagination-options-size-changer .ant-select {
+    display: inline-block !important;
+    min-width: 60px !important;
+  }
+}
+
+/* Form Modal Responsive Styles */
+@media (max-width: 768px) {
+  /* Modal responsive with forced centering */
+  .ant-modal-wrap {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 16px !important;
+    min-height: 100vh !important;
+  }
+  }
+  .ant-modal {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: calc(100vw - 32px) !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    position: relative !important;
+    width: 100% !important;
+    max-width: 800px !important;
+  }
+  
+  .ant-modal-content {
+    border-radius: 8px !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    max-height: calc(100vh - 64px) !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  
+  /* Force center alignment */
+  .ant-modal-root .ant-modal-wrap {
+    text-align: center !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
+  .ant-modal-root .ant-modal {
+    text-align: left !important;
+    display: block !important;
+  }
+  
+  .ant-modal-header {
+    padding: 16px 20px 12px !important;
+  }
+  
+  .ant-modal-body {
+    padding: 16px 20px !important;
+    max-height: calc(100vh - 300px) !important;
+    overflow-y: auto !important;
+    flex: 1 !important;
+  }
+  
+  .ant-modal-footer {
+    padding: 12px 20px 16px !important;
+}
+  
+  /* Form layout responsive */
+  .ant-form-vertical .ant-form-item {
+    margin-bottom: 16px !important;
+  }
+  
+  .ant-form-item-label {
+    padding-bottom: 4px !important;
+  }
+  
+  /* Items table in form */
+  .ant-table-wrapper {
+    overflow-x: auto !important;
+}
+  
+  .ant-table {
+    min-width: 600px !important;
+  }
+  
+  .ant-table-thead > tr > th,
+  .ant-table-tbody > tr > td {
+    padding: 8px 4px !important;
+    font-size: 13px !important;
+  }
+  
+  /* Form controls in table */
+  .ant-table .ant-select {
+    min-width: 120px !important;
+    font-size: 13px !important;
+  }
+  
+  .ant-table .ant-input-number {
+    width: 80px !important;
+  }
+  
+  /* DatePicker responsive */
+  .ant-picker {
+    width: 100% !important;
+  }
+  
+  /* Select responsive */
+  .ant-select {
+    font-size: 14px !important;
+  }
+  
+  .ant-select-selection-item {
+    font-size: 13px !important;
+  }
+  
+  /* Empty state responsive */
+  .penjualan-empty-state {
+    padding: 24px 16px !important;
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
+  .penjualan-empty-state .anticon {
+    font-size: 24px !important;
+    margin-bottom: 12px !important;
+  }
+  
+  .penjualan-empty-state div {
+    font-size: 14px !important;
+    margin-bottom: 12px !important;
+  }
+  
+  /* Fix button icon alignment */
+  .penjualan-empty-state .ant-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    margin: 0 auto !important;
+  }
+  
+  .penjualan-empty-state .ant-btn .anticon {
+    font-size: 14px !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+  
+  /* Action buttons in items */
+  .ant-table .ant-btn {
+    padding: 2px 6px !important;
+    font-size: 12px !important;
+    height: auto !important;
+  }
+  
+  /* Tambah item button */
+  .tambah-item-button {
+    width: 100% !important;
+    margin-bottom: 12px !important;
+  }
+  
+  /* Subtotal responsive */
+  .penjualan-subtotal {
+    text-align: center !important;
+    margin-top: 16px !important;
+    padding: 12px !important;
+    background: #f9f9f9 !important;
+    border-radius: 6px !important;
+  }
+
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .ant-modal-wrap {
+    padding: 8px !important;
+    min-height: 100vh !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
+  .ant-modal {
+    max-width: calc(100vw - 16px) !important;
+  }
+  
+  .ant-modal-content {
+    max-height: calc(100vh - 32px) !important;
+  }
+  
+  /* Additional centering for extra small devices */
+  .ant-modal-root .ant-modal-wrap {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  
+  .ant-modal-body {
+    padding: 12px 16px !important;
+    max-height: calc(100vh - 200px) !important;
+  }
+  
+  .ant-table {
+    min-width: 500px !important;
+  }
+  
+  .ant-table .ant-select {
+    min-width: 100px !important;
+  }
+  
+  .ant-table .ant-input-number {
+    width: 60px !important;
+  }
+  
+  /* Stack form buttons vertically */
+  .ant-modal-footer .ant-btn + .ant-btn {
+    margin-left: 0 !important;
+    margin-top: 8px !important;
+  }
+  
+  .ant-modal-footer {
+    text-align: center !important;
+  }
+  
+  .ant-modal-footer .ant-btn {
+    width: 100% !important;
+    max-width: 120px !important;
+  }
+}

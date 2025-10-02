@@ -1,0 +1,85 @@
+services:
+  # MySQL Database
+  db:
+    image: mysql:8.0
+    container_name: toko-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: toko_db
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: toko_user
+      MYSQL_PASSWORD: toko_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - toko-network
+
+  # Laravel API
+  api:
+    build:
+      context: ./toko-api
+      dockerfile: Dockerfile
+    container_name: toko-api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./toko-api:/var/www/html
+      - vendor_data:/var/www/html/vendor
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: toko_db
+      DB_USERNAME: toko_user
+      DB_PASSWORD: toko_pass
+    depends_on:
+      - db
+    networks:
+      - toko-network
+
+  # React Frontend
+  web:
+    build:
+      context: ./toko-web
+      dockerfile: Dockerfile
+    container_name: toko-web
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./toko-web:/app
+      - node_modules_data:/app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:8000/api
+    depends_on:
+      - api
+    networks:
+      - toko-network
+
+  # phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: toko-phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+    depends_on:
+      - db
+    networks:
+      - toko-network
+
+volumes:
+  db_data:
+  vendor_data:
+  node_modules_data:
+
+networks:
+  toko-network:
+    driver: bridge
