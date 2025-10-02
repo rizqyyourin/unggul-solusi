@@ -36,9 +36,7 @@ if (!(Test-Path "toko-api\.env") -and (Test-Path "toko-api\.env.docker")) {
 
 # Create .env for React if not exists
 if (!(Test-Path "toko-web\.env")) {
-    @"
-VITE_API_URL=http://localhost:8000/api
-"@ | Out-File -FilePath "toko-web\.env" -Encoding utf8
+    "VITE_API_URL=http://localhost:8000/api" | Out-File -FilePath "toko-web\.env" -Encoding utf8
     Write-Host "  ✅ Created React .env" -ForegroundColor Green
 }
 
