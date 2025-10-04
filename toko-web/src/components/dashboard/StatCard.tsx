@@ -12,6 +12,14 @@ interface StatCardProps {
   formatter?: Formatter
 }
 
+// Komponen kartu statistik kecil yang menampilkan satu metrik (jumlah atau rupiah)
+// Props:
+// - title: label kartu
+// - value: angka atau string yang akan ditampilkan
+// - icon: ReactNode ikon di sisi kanan
+// - color / borderColor: styling untuk variasi visual
+// - isMonetary: bila true, akan menggunakan ukuran font lebih kecil dan memberi
+//   kesempatan untuk memformat angka melalui props formatter
 export function StatCard({ 
   title, 
   value, 

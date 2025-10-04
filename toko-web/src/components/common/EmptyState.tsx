@@ -10,6 +10,7 @@ interface EmptyStateProps {
   style?: React.CSSProperties
 }
 
+// Reusable empty state UI with optional action button
 export function EmptyState({
   icon,
   title = 'Belum ada data',

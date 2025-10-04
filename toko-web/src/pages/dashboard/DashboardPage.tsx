@@ -10,10 +10,14 @@ import type { Pelanggan, Barang, Penjualan } from '../../types'
 const { Title } = Typography
 
 export default function DashboardPage() {
+  // DashboardPage: ringkasan cepat dari data bisnis (jumlah pelanggan, barang,
+  // transaksi, dan total revenue). Data diambil melalui hook useList yang
+  // membungkus panggilan API.
   const pelanggan = useList<Pelanggan>('/pelanggan')
   const barang = useList<Barang>('/barang')
   const penjualan = useList<Penjualan>('/penjualan')
   
+  // stats disimpan di state lokal untuk memudahkan render dan re-calculation
   const [stats, setStats] = useState({
     totalPelanggan: 0,
     totalBarang: 0,
@@ -21,6 +25,7 @@ export default function DashboardPage() {
     totalRevenue: 0
   })
 
+  // Hitung statistik ketika data selesai dimuat/berubah
   useEffect(() => {
     // Calculate statistics from loaded data
     const totalRevenue = penjualan.data.reduce((sum, p) => sum + (p.subtotal || 0), 0)
@@ -35,6 +40,7 @@ export default function DashboardPage() {
 
   const isLoading = pelanggan.loading || barang.loading || penjualan.loading
 
+  // Data untuk menampilkan card-card ringkasan di atas
   const cardData = [
     {
       title: 'Total Pelanggan',

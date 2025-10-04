@@ -6,6 +6,7 @@ interface LoadingSpinnerProps {
   style?: React.CSSProperties
 }
 
+// Simple loading spinner component used while fetching data
 export function LoadingSpinner({ 
   size = 'large', 
   message = 'Memuat data...', 

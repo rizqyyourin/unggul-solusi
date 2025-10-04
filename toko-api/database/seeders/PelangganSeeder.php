@@ -6,14 +6,19 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
+// Seeder untuk mengisi data awal tabel pelanggan
 class PelangganSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
+    /**
+     * Isi data awal pelanggan ke database
+     */
     public function run(): void
     {
-        DB::table('pelanggan')->insert([
+    // Insert data pelanggan ke tabel pelanggan
+    DB::table('pelanggan')->insert([
             ['id_pelanggan' => 'PELANGGAN_1', 'nama' => 'ANDI', 'domisili' => 'JAK-UT', 'jenis_kelamin' => 'PRIA'],
             ['id_pelanggan' => 'PELANGGAN_2', 'nama' => 'BUDI', 'domisili' => 'JAK-BAR', 'jenis_kelamin' => 'PRIA'],
             ['id_pelanggan' => 'PELANGGAN_3', 'nama' => 'JOHAN', 'domisili' => 'JAK-SEL', 'jenis_kelamin' => 'PRIA'],

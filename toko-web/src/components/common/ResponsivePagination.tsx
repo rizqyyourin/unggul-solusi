@@ -44,6 +44,7 @@ export function useResponsivePagination({
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
+  // Kembalian: konfigurasi yang dapat langsung diberikan ke komponen Pagination dari Antd
   return {
     current,
     pageSize,

@@ -1,3 +1,4 @@
+// Reusable action buttons for table rows: Edit + Delete with confirmation
 import { Button, Space, Popconfirm } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 

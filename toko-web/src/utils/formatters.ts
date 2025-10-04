@@ -1,5 +1,8 @@
+// Utilitas format & parsing yang sering digunakan di UI
+// Ditulis agar pembaca baru cepat paham cara menampilkan angka dan currency di format ID
+
 /**
- * Format number to Indonesian Rupiah currency
+ * Format number ke tampilan Rupiah (contoh: 10000 -> "Rp10.000")
  */
 export const formatCurrency = (amount: number): string => {
   return new Intl.NumberFormat('id-ID', {
@@ -11,21 +14,23 @@ export const formatCurrency = (amount: number): string => {
 }
 
 /**
- * Format number with thousands separator
+ * Format number biasa dengan pemisah ribuan (contoh: 10000 -> "10.000")
  */
 export const formatNumber = (num: number): string => {
   return new Intl.NumberFormat('id-ID').format(num)
 }
 
 /**
- * Parse currency string back to number
+ * Parse string currency menjadi angka (menghapus karakter non-digit)
+ * Contoh: "Rp10.000" -> 10000
  */
 export const parseCurrency = (currencyString: string): number => {
   return parseInt(currencyString.replace(/[^0-9]/g, '')) || 0
 }
 
 /**
- * Generate random ID with prefix
+ * Generate ID sederhana dengan prefix dan kombinasi timestamp + random
+ * Berguna untuk membuat placeholder ID di client sebelum record disimpan di server
  */
 export const generateId = (prefix: string, length: number = 6): string => {
   const timestamp = Date.now().toString().slice(-4)
@@ -34,7 +39,7 @@ export const generateId = (prefix: string, length: number = 6): string => {
 }
 
 /**
- * Truncate text with ellipsis
+ * Potong teks panjang dan tambahkan ellipsis jika melebihi maxLength
  */
 export const truncateText = (text: string, maxLength: number): string => {
   if (text.length <= maxLength) return text
@@ -42,7 +47,8 @@ export const truncateText = (text: string, maxLength: number): string => {
 }
 
 /**
- * Debounce function for search input
+ * Debounce sederhana untuk input pencarian
+ * Membatasi frekuensi pemanggilan fungsi sehingga tidak terlalu sering memicu request
  */
 export const debounce = <T extends (...args: any[]) => any>(
   func: T,

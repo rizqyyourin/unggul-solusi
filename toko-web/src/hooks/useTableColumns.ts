@@ -10,6 +10,8 @@ interface UseTableColumnsOptions<T> {
   excludeActions?: boolean
 }
 
+// Hook helper yang menambahkan kolom aksi (Edit / Delete) ke daftar kolom tabel
+// Gunakan ketika Anda ingin konsisten menampilkan tombol aksi pada tabel-tabel CRUD
 export function useTableColumns<T>(
   baseColumns: ColumnsType<T>,
   options: UseTableColumnsOptions<T>
@@ -24,7 +26,8 @@ export function useTableColumns<T>(
       key: 'action',
       width: actionColumnWidth,
       render: (_: unknown, record: T) => 
-        React.createElement(TableActionButtons, {
+        // Cast to any to avoid TypeScript incompatibility when passing generic callbacks
+        React.createElement(TableActionButtons as any, {
           record,
           onEdit,
           onDelete

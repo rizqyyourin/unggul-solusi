@@ -6,14 +6,19 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
+// Seeder untuk mengisi data awal tabel item_penjualan
 class ItemPenjualanSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
+    /**
+     * Isi data awal item penjualan ke database
+     */
     public function run(): void
     {
-        DB::table('item_penjualan')->insert([
+    // Insert data item penjualan ke tabel item_penjualan
+    DB::table('item_penjualan')->insert([
             ['nota' => 'NOTA_1', 'kode_barang' => 'BRG_1', 'qty' => 2],
             ['nota' => 'NOTA_1', 'kode_barang' => 'BRG_2', 'qty' => 2],
             ['nota' => 'NOTA_10', 'kode_barang' => 'BRG_5', 'qty' => 10],

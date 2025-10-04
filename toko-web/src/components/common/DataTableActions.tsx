@@ -1,3 +1,4 @@
+// Small toolbar for data tables: export and add actions
 import { Button, Space } from 'antd'
 import { PlusOutlined, DownloadOutlined } from '@ant-design/icons'
 import { ReactNode } from 'react'
@@ -20,6 +21,7 @@ export default function DataTableActions({
   return (
     <div className="data-table-actions">
       <Space size="small" wrap>
+        {/* Export button - triggers CSV export via utils */}
         <Button 
           icon={<DownloadOutlined />} 
           onClick={onExport}
@@ -32,6 +34,7 @@ export default function DataTableActions({
         {customActions.map((action, index) => (
           <span key={index}>{action}</span>
         ))}
+        {/* Add button - opens modal/form to add new record */}
         <Button 
           type="primary" 
           icon={<PlusOutlined />} 

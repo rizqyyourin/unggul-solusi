@@ -14,6 +14,8 @@ const { Title } = Typography
 
 type FormValues = Omit<Pelanggan, 'id_pelanggan'> & { id_pelanggan?: string }
 
+// Halaman untuk mengelola data pelanggan
+// Fitur: daftar, cari, tambah, edit, hapus pelanggan
 export default function PelangganPage() {
   const { message, modal } = App.useApp()
   const { data, loading, refresh, setData } = useList<Pelanggan>('/pelanggan')
@@ -516,3 +518,4 @@ export default function PelangganPage() {
     </div>
   )
 }
+

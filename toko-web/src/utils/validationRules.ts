@@ -8,6 +8,8 @@ interface ValidationOptions {
   label: string
 }
 
+// Factory helpers untuk membuat rule validasi Ant Design secara konsisten
+// Gunakan fungsi-fungsi ini saat mendefinisikan prop `rules` pada Form.Item
 export function createIdValidation({ prefix, label }: ValidationOptions): ValidationRule {
   return {
     pattern: new RegExp(`^${prefix}_\\d+$`),
