@@ -9,25 +9,32 @@ import PenjualanPage from './pages/penjualan/PenjualanPage'
 
 const { Header, Content, Footer } = Layout
 
+// Komponen utama aplikasi web, mengatur layout, navigasi, dan halaman
 export default function App() {
+  // Ambil lokasi URL saat ini untuk menentukan menu yang aktif
   const location = useLocation()
+  // Ambil bagian pertama dari path untuk menu
   const selectedKey = location.pathname.split('/')[1] || 'dashboard'
+  // State untuk buka/tutup menu mobile
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  // State untuk deteksi tampilan mobile
   const [isMobile, setIsMobile] = useState(false)
   
   const {
     token: { colorBgContainer }
   } = theme.useToken()
 
+  // Deteksi apakah tampilan mobile, update saat window di-resize
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 992) // Changed from 768 to 992 (lg breakpoint)
+      setIsMobile(window.innerWidth < 992) // breakpoint mobile
     }
     checkMobile()
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
+  // Daftar menu navigasi utama aplikasi
   const menuItems = [
     { key: 'dashboard', icon: <DashboardOutlined />, label: <Link to="/dashboard">Dashboard</Link> },
     { key: 'pelanggan', icon: <UserOutlined />, label: <Link to="/pelanggan">Pelanggan</Link> },
@@ -35,8 +42,10 @@ export default function App() {
     { key: 'penjualan', icon: <ShoppingCartOutlined />, label: <Link to="/penjualan">Penjualan</Link> }
   ]
 
+  // Render layout utama aplikasi: header, menu, halaman, dan footer
   return (
     <Layout style={{ minHeight: '100vh' }}>
+      {/* Header: berisi judul dan menu navigasi */}
       <Header style={{ 
         position: 'sticky', 
         top: 0, 
@@ -54,6 +63,7 @@ export default function App() {
           justifyContent: 'space-between',
           height: '100%'
         }}>
+          {/* Judul aplikasi, klik untuk ke dashboard */}
           <div style={{ 
             color: '#fff', 
             fontWeight: 700, 
@@ -66,6 +76,7 @@ export default function App() {
             </Link>
           </div>
           
+          {/* Menu navigasi desktop, atau tombol menu mobile */}
           {!isMobile ? (
             <Menu
               theme="dark"
@@ -93,7 +104,7 @@ export default function App() {
         </div>
       </Header>
       
-      {/* Mobile Drawer Menu */}
+  {/* Menu navigasi mobile (drawer) */}
       <Drawer
         title="Menu"
         placement="right"
@@ -110,7 +121,8 @@ export default function App() {
         />
       </Drawer>
 
-      <Content style={{ background: '#f0f2f5' }}>
+  {/* Konten utama aplikasi, berisi halaman yang sedang dibuka */}
+  <Content style={{ background: '#f0f2f5' }}>
         <div style={{ 
           maxWidth: 1200, 
           margin: '0 auto', 
@@ -123,6 +135,7 @@ export default function App() {
             borderRadius: 8,
             boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
           }}>
+            {/* Routing: menentukan halaman yang ditampilkan sesuai URL */}
             <Routes>
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
               <Route path="/dashboard" element={<DashboardPage />} />
@@ -133,6 +146,7 @@ export default function App() {
           </div>
         </div>
       </Content>
+      {/* Footer aplikasi */}
       <Footer style={{ 
         textAlign: 'center',
         background: '#f0f2f5',

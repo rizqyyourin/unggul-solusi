@@ -6,12 +6,22 @@ export interface UseSearchOptions<T> {
   onSearch?: (term: string, results: T[]) => void
 }
 
+// Hook untuk fitur pencarian sederhana pada daftar data.
+// Input:
+// - data: array sumber
+// - searchFields: field-field yang akan dicari (mis. ['id_nota', 'kode_pelanggan'])
+// Output penting:
+// - searchTerm / setSearchTerm: state kata kunci
+// - filteredData: hasil yang siap ditampilkan (akan berisi data penuh ketika tidak searching)
+// - isSearching: boolean
+// - handleSearch / handleClearSearch / handleSearchEnter: helper untuk kontrol input
+// - searchResults: hasil pencarian murni (sama dengan filteredData kecuali ada side-effects)
 export function useSearch<T>({ data, searchFields, onSearch }: UseSearchOptions<T>) {
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredData, setFilteredData] = useState<T[]>([])
   const [isSearching, setIsSearching] = useState(false)
 
-  // Filtered data based on search
+  // Hasil filter berdasarkan searchTerm
   const searchResults = useMemo(() => {
     if (!searchTerm.trim()) {
       return data
@@ -27,7 +37,7 @@ export function useSearch<T>({ data, searchFields, onSearch }: UseSearchOptions<
     )
   }, [data, searchTerm, searchFields])
 
-  // Update filtered data when search results change
+  // Sync hasil pencarian ke state filteredData dan panggil callback bila ada
   useEffect(() => {
     setFilteredData(searchResults)
     if (onSearch) {

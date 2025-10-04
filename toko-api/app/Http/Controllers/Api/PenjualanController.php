@@ -12,15 +12,21 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
 
+// Controller untuk mengatur endpoint API penjualan
 class PenjualanController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    /**
+     * Ambil semua data penjualan dari database
+     * Endpoint: GET /api/penjualan
+     */
     public function index(): JsonResponse
     {
         try {
             // Menggunakan raw query untuk pengurutan yang efisien berdasarkan angka di id_nota
+            // Ambil semua penjualan, beserta relasi pelanggan dan barang
             $penjualan = Penjualan::with(['pelanggan', 'itemPenjualan.barang'])
                 ->orderByRaw("CAST(SUBSTRING(id_nota, 6) AS UNSIGNED)")
                 ->get();
@@ -42,9 +48,14 @@ class PenjualanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    /**
+     * Tambah data penjualan baru ke database
+     * Endpoint: POST /api/penjualan
+     */
     public function store(Request $request): JsonResponse
     {
         try {
+            // Validasi input dari user
             $request->validate([
                 'id_nota' => 'required|string|max:20|unique:penjualan,id_nota',
                 'tgl' => 'required|date',
@@ -54,16 +65,19 @@ class PenjualanController extends Controller
                 'items.*.qty' => 'required|integer|min:1'
             ]);
 
+            // Mulai transaksi database
             DB::beginTransaction();
 
             // Calculate subtotal
             $subtotal = 0;
+            // Hitung subtotal dari semua barang yang dibeli
             foreach ($request->items as $item) {
                 $barang = Barang::find($item['kode_barang']);
                 $subtotal += $barang->harga * $item['qty'];
             }
 
             // Create penjualan
+            // Simpan data penjualan baru ke database
             $penjualan = Penjualan::create([
                 'id_nota' => $request->id_nota,
                 'tgl' => $request->tgl,
@@ -72,6 +86,7 @@ class PenjualanController extends Controller
             ]);
 
             // Create item penjualan
+            // Simpan semua item penjualan (barang yang dibeli)
             foreach ($request->items as $item) {
                 ItemPenjualan::create([
                     'nota' => $request->id_nota,
@@ -80,9 +95,11 @@ class PenjualanController extends Controller
                 ]);
             }
 
+            // Selesai transaksi database
             DB::commit();
 
             // Load relationships for response
+            // Load relasi untuk response
             $penjualan->load(['pelanggan', 'itemPenjualan.barang']);
 
             return response()->json([
@@ -110,9 +127,14 @@ class PenjualanController extends Controller
     /**
      * Display the specified resource.
      */
+    /**
+     * Ambil detail penjualan berdasarkan ID nota
+     * Endpoint: GET /api/penjualan/{id}
+     */
     public function show(string $id): JsonResponse
     {
         try {
+            // Cari penjualan beserta relasi
             $penjualan = Penjualan::with(['pelanggan', 'itemPenjualan.barang'])->find($id);
             
             if (!$penjualan) {
@@ -139,9 +161,14 @@ class PenjualanController extends Controller
     /**
      * Update the specified resource in storage.
      */
+    /**
+     * Update data penjualan berdasarkan ID nota
+     * Endpoint: PUT /api/penjualan/{id}
+     */
     public function update(Request $request, string $id): JsonResponse
     {
         try {
+            // Cari penjualan yang mau diupdate
             $penjualan = Penjualan::find($id);
             
             if (!$penjualan) {
@@ -151,6 +178,7 @@ class PenjualanController extends Controller
                 ], 404);
             }
 
+            // Validasi input update
             $request->validate([
                 'tgl' => 'sometimes|required|date',
                 'kode_pelanggan' => 'sometimes|required|string|exists:pelanggan,id_pelanggan',
@@ -159,18 +187,22 @@ class PenjualanController extends Controller
                 'items.*.qty' => 'required_with:items|integer|min:1'
             ]);
 
+            // Mulai transaksi database
             DB::beginTransaction();
 
             // Update penjualan data
             $updateData = $request->only(['tgl', 'kode_pelanggan']);
             
             // If items are provided, recalculate subtotal and update items
+            // Jika ada perubahan item, update semua item dan subtotal
             if ($request->has('items')) {
                 // Delete existing items
+                // Hapus semua item lama
                 ItemPenjualan::where('nota', $id)->delete();
                 
                 // Calculate new subtotal
                 $subtotal = 0;
+                // Hitung subtotal baru
                 foreach ($request->items as $item) {
                     $barang = Barang::find($item['kode_barang']);
                     $subtotal += $barang->harga * $item['qty'];
@@ -179,6 +211,7 @@ class PenjualanController extends Controller
                 $updateData['subtotal'] = $subtotal;
                 
                 // Create new items
+                // Simpan item baru
                 foreach ($request->items as $item) {
                     ItemPenjualan::create([
                         'nota' => $id,
@@ -188,11 +221,14 @@ class PenjualanController extends Controller
                 }
             }
 
+            // Update data penjualan di database
             $penjualan->update($updateData);
 
+            // Selesai transaksi database
             DB::commit();
 
             // Load relationships for response
+            // Load relasi untuk response
             $penjualan->load(['pelanggan', 'itemPenjualan.barang']);
 
             return response()->json([
@@ -220,9 +256,14 @@ class PenjualanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    /**
+     * Hapus penjualan dari database
+     * Endpoint: DELETE /api/penjualan/{id}
+     */
     public function destroy(string $id): JsonResponse
     {
         try {
+            // Cari penjualan yang mau dihapus
             $penjualan = Penjualan::find($id);
             
             if (!$penjualan) {
@@ -232,14 +273,18 @@ class PenjualanController extends Controller
                 ], 404);
             }
 
+            // Mulai transaksi database
             DB::beginTransaction();
 
             // Delete item penjualan first (due to foreign key)
+            // Hapus semua item penjualan dulu (karena foreign key)
             ItemPenjualan::where('nota', $id)->delete();
             
             // Delete penjualan
+            // Hapus penjualan dari database
             $penjualan->delete();
 
+            // Selesai transaksi database
             DB::commit();
 
             return response()->json([

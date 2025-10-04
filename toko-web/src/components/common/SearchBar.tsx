@@ -1,3 +1,4 @@
+// Reusable search bar used across pages for filtering data
 import { Input, Button, Space } from 'antd'
 import { SearchOutlined, ReloadOutlined } from '@ant-design/icons'
 

@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+// Migration untuk membuat tabel barang di database
 return new class extends Migration
 {
     /**
@@ -11,10 +12,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('barang', function (Blueprint $table) {
+    // Membuat tabel barang
+    Schema::create('barang', function (Blueprint $table) {
+            // Kolom kode barang sebagai primary key
             $table->string('kode', 20)->primary();
+            // Kolom nama barang
             $table->string('nama', 100);
+            // Kolom kategori barang
             $table->enum('kategori', ['ATK', 'RT', 'MASAK', 'ELEKTRONIK']);
+            // Kolom harga barang
             $table->unsignedInteger('harga');
         });
     }

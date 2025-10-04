@@ -1,4 +1,9 @@
-// Input sanitization utilities for security
+// Utilitas sanitasi input sederhana
+// Tujuan: membersihkan input pengguna dari karakter berbahaya atau tag HTML
+// Catatan: ini membantu pada level UI, tetapi validasi & sanitasi server tetap wajib.
+// Jangan hanya mengandalkan sanitasi client untuk keamanan.
+// Fungsi-fungsi berikut ditujukan untuk membuat data yang ditampilkan/diterima lebih bersih.
+// Untuk validasi lebih kuat, gunakan library khusus atau lakukan validasi di backend.
 export const sanitizeInput = {
   // Remove potentially dangerous characters but keep normal text
   text: (input: string): string => {
@@ -40,6 +45,7 @@ export const sanitizeInput = {
 
 // Additional validation functions
 export const validateInput = {
+  // Kumpulan pemeriksaan sederhana untuk mendeteksi pola berbahaya
   // Check for common SQL injection patterns
   hasSQLInjection: (input: string): boolean => {
     const sqlPatterns = [

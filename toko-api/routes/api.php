@@ -23,16 +23,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // API Routes for Toko Database
 
-// Pelanggan CRUD Routes
+// Endpoint CRUD untuk pelanggan
 Route::apiResource('pelanggan', PelangganController::class);
 
-// Barang CRUD Routes  
+// Endpoint CRUD untuk barang
 Route::apiResource('barang', BarangController::class);
 
-// Penjualan CRUD Routes
+// Endpoint CRUD untuk penjualan
 Route::apiResource('penjualan', PenjualanController::class);
 
-// Additional routes if needed
+// Endpoint root API, menampilkan info dan daftar endpoint
 Route::get('/', function () {
     return response()->json([
         'message' => 'Toko API is running!',

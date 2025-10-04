@@ -1,6 +1,9 @@
 import { Modal, Form, FormInstance } from 'antd'
 import { ReactNode } from 'react'
 
+// Komponen modal form sederhana yang digunakan di banyak halaman CRUD
+// Tujuan: membungkus Ant Design Modal + Form sehingga setiap halaman cukup
+// memasukkan fields sebagai children dan mengontrol open/onOk/onCancel.
 interface FormModalProps {
   title: string
   open: boolean
@@ -28,6 +31,8 @@ export function FormModal({
   width = 600,
   destroyOnClose = true
 }: FormModalProps) {
+  // Modal sudah mengandung <Form> di dalamnya. Biasanya pemanggil memberikan
+  // Form.Item sebagai children untuk field-field yang diperlukan.
   return (
     <Modal
       title={title}

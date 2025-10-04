@@ -1,3 +1,5 @@
+// Halaman utama untuk mengelola data barang
+// Fungsinya: tampilkan tabel barang, pencarian, export CSV, tambah/edit/hapus barang
 import { useMemo, useState, useEffect } from 'react'
 import { App, Button, Card, Form, Input, InputNumber, Modal, Select, Space, Table, Tag, Typography } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
@@ -37,6 +39,7 @@ const kategoriColors = {
 } as const
 
 export default function BarangPage() {
+  // Antd App instance untuk menampilkan message dan modal
   const { message, modal } = App.useApp()
   const { data, loading, refresh, setData } = useList<Barang>('/barang')
   const [open, setOpen] = useState(false)
@@ -51,6 +54,7 @@ export default function BarangPage() {
   })
 
   // Generate next kode barang
+  // Helper: generate kode barang berikutnya otomatis berdasarkan data yang ada
   const generateNextKode = (): string => {
     if (!data || data.length === 0) return 'BRG_1'
     
@@ -69,6 +73,7 @@ export default function BarangPage() {
   }
 
   // Format number as Indonesian currency (with dots as thousand separators)
+  // Helper: format angka menjadi tampilan mata uang lokal (id-ID)
   const formatCurrency = (value: string | number): string => {
     if (!value) return ''
     const numStr = value.toString().replace(/[^0-9]/g, '')
@@ -77,6 +82,7 @@ export default function BarangPage() {
   }
 
   // Parse currency string to number
+  // Helper: parse string format currency menjadi number untuk dikirim ke API
   const parseCurrency = (value: string): number => {
     if (!value) return 0
     return parseInt(value.replace(/\./g, ''), 10) || 0
@@ -133,6 +139,7 @@ export default function BarangPage() {
     }))
   }, [currentData])
 
+  // Export data saat user memilih export
   const handleExportCSV = () => {
     const dataToExport = isSearching ? currentData : data
     exportToCSV({
@@ -221,6 +228,7 @@ export default function BarangPage() {
     }
   ], [])
 
+  // Buka modal untuk menambah data baru
   function onAdd() {
     setEditing(null)
     form.resetFields()
@@ -233,6 +241,7 @@ export default function BarangPage() {
     setOpen(true)
   }
 
+  // Buka modal untuk edit data existing
   function onEdit(record: Barang) {
     setEditing(record)
     setHargaDisplay(formatCurrency(record.harga))
@@ -243,6 +252,7 @@ export default function BarangPage() {
     setOpen(true)
   }
 
+  // Hapus data: panggil API DELETE dan update state
   function onDelete(record: Barang) {
     modal.confirm({
       title: `Hapus barang ${record.nama}?`,
@@ -258,6 +268,7 @@ export default function BarangPage() {
     })
   }
 
+  // Submit form untuk create atau update
   async function onSubmit(values: FormValues) {
     try {
       // Sanitize inputs
@@ -325,6 +336,7 @@ export default function BarangPage() {
     }
   }
 
+  // Render UI: header, actions, search, tabel, dan modal form
   return (
     <>
       <PageHeader 

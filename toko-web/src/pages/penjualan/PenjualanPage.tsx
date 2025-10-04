@@ -1,3 +1,15 @@
+// Halaman Transaksi Penjualan
+//
+// PenjualanPage bertanggung jawab untuk:
+// - Menampilkan daftar transaksi penjualan (nota)
+// - Mencari transaksi berdasarkan ID nota atau kode pelanggan
+// - Menambahkan, mengedit, dan menghapus transaksi
+// - Menangani form yang berisi daftar item (nested form)
+//
+// Catatan untuk pembaca baru:
+// - Data diambil melalui hook useList yang membungkus axios (lihat src/lib/hooks)
+// - Form menggunakan Ant Design Form dengan field 'items' sebagai array nested
+// - Fungsi penting: generateNextNota, onAdd, onEdit, onDelete, onSubmit
 import { useEffect, useMemo, useState } from 'react'
 import { App, Button, Card, DatePicker, Form, Input, InputNumber, Modal, Select, Space, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
@@ -22,6 +34,7 @@ export default function PenjualanPage() {
   // Set dayjs locale to Indonesian for month names
   dayjs.locale('id')
   
+  // Ant Design app utilities for toasts and modal dialogs
   const { message, modal } = App.useApp()
   const { data, loading, refresh } = useList<Penjualan>('/penjualan')
   const pel = useList<Pelanggan>('/pelanggan')
@@ -35,7 +48,7 @@ export default function PenjualanPage() {
     total: 0
   })
 
-  // Use common search hook
+  // Use common search hook: ini menghasilkan filteredData dan handler pencarian
   const {
     searchTerm,
     setSearchTerm,
@@ -49,10 +62,10 @@ export default function PenjualanPage() {
     searchFields: ['id_nota', 'kode_pelanggan'] as (keyof Penjualan)[]
   })
 
-  // Use common export hook
+  // Hook helper untuk mengekspor data ke CSV (lihat src/utils/exportCSV)
   const { exportToCSV } = useExportCSV()
 
-  // Use responsive pagination
+  // Konfigurasi pagination yang responsif (sesuaikan jumlah baris berdasarkan lebar layar)
   const paginationConfig = useResponsivePagination({
     current: pagination.current,
     pageSize: pagination.pageSize,
@@ -74,7 +87,7 @@ export default function PenjualanPage() {
     }
   })
 
-  // Debug data received from API
+  // Debug: cetak data API ke console saat berubah (bisa dihapus oleh pemula setelah paham struktur data)
   useEffect(() => {
     console.log('=== API DATA DEBUG ===')
     console.log('Raw data from API:', data)
@@ -84,7 +97,8 @@ export default function PenjualanPage() {
     }
   }, [data])
 
-  // Generate next nota ID
+  // Generate next nota ID secara sederhana berdasarkan data yang ada
+  // Format ID: NOTA_{number}
   const generateNextNota = (): string => {
     if (!data || data.length === 0) return 'NOTA_1'
     
@@ -102,10 +116,10 @@ export default function PenjualanPage() {
     return `NOTA_${maxNumber + 1}`
   }
 
-  // Get current data to display
+  // currentData berisi data yang akan ditampilkan (hasil pencarian jika sedang searching)
   const currentData = isSearching ? filteredData : data
 
-  // Update pagination when data changes
+  // Update pagination total ketika data berubah
   useEffect(() => {
     setPagination(prev => ({
       ...prev,
@@ -214,10 +228,11 @@ export default function PenjualanPage() {
     }
   ], [])
 
+  // Buka modal untuk membuat transaksi baru. Mengatur nilai default form.
   function onAdd() {
     setEditing(null)
     form.resetFields()
-    
+
     // Auto-generate next nota ID dan set tanggal hari ini
     const nextNota = generateNextNota()
     form.setFieldsValue({ 
@@ -225,10 +240,12 @@ export default function PenjualanPage() {
       tgl: dayjs(),
       items: [] // Mulai dengan items kosong
     })
-    
+
     setOpen(true)
   }
 
+  // Buka modal untuk mengedit transaksi yang ada.
+  // Fungsi ini memetakan struktur record dari API ke bentuk form yang diharapkan.
   function onEdit(record: Penjualan) {
     setEditing(record)
     console.log('=== EDIT DEBUG ===')
@@ -258,6 +275,7 @@ export default function PenjualanPage() {
     setOpen(true)
   }
 
+  // Hapus transaksi dengan konfirmasi modal.
   function onDelete(record: Penjualan) {
     modal.confirm({
       title: `Hapus penjualan ${record.id_nota}?`,
@@ -273,6 +291,10 @@ export default function PenjualanPage() {
     })
   }
 
+  // Submit handler untuk form tambah/edit transaksi.
+  // - Melakukan validasi sederhana pada client
+  // - Mengkonversi tanggal ke format string YYYY-MM-DD sebelum dikirim
+  // - Membedakan endpoint POST (create) dan PUT (update)
   async function onSubmit(values: PenjualanForm) {
     try {
       // Validasi items
@@ -294,6 +316,7 @@ export default function PenjualanPage() {
         }
       }
 
+      // Susun payload yang akan dikirim ke API
       const payload = {
         ...values,
         tgl: values.tgl.format('YYYY-MM-DD'),
@@ -309,7 +332,8 @@ export default function PenjualanPage() {
         await api.post('/penjualan', payload)
         message.success('Berhasil ditambahkan')
       }
-      setOpen(false)
+  // Tutup modal dan refresh list setelah berhasil
+  setOpen(false)
       refresh()
       
       // Clear search if adding new item
@@ -326,6 +350,8 @@ export default function PenjualanPage() {
     }
   }
 
+  // Kolom untuk tabel nested items di form transaksi
+  // Menggunakan Form.List di dalam Table untuk setiap baris item
   const itemColumns = [
     {
       title: 'Barang',
@@ -356,7 +382,8 @@ export default function PenjualanPage() {
     }
   ]
 
-  // Recompute subtotal when form values change
+  // Hitung subtotal secara real-time ketika field 'items' berubah.
+  // Mengakses harga barang dari daftar barang yang sudah di-fetch (brg.data)
   const [subtotal, setSubtotal] = useState(0)
   const watchedItems = Form.useWatch('items', form) as Array<{ kode_barang?: string; qty?: number }> | undefined
   useEffect(() => {

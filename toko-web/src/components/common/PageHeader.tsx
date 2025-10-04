@@ -1,3 +1,4 @@
+// Simple header component used on pages to show title and description
 import { Typography, Space } from 'antd'
 import { ReactNode } from 'react'
 
@@ -12,10 +13,12 @@ interface PageHeaderProps {
 export default function PageHeader({ icon, title, description }: PageHeaderProps) {
   return (
     <div style={{ marginBottom: 24 }}>
+      {/* Title with icon */}
       <Title level={3} style={{ margin: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
         {icon}
         {title}
       </Title>
+      {/* Short description under the title */}
       <p style={{ color: '#666', margin: '8px 0 0 32px' }}>
         {description}
       </p>

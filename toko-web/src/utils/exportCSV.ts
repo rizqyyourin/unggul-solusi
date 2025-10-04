@@ -13,6 +13,11 @@ export interface ExportCSVOptions {
   searchContext?: string
 }
 
+// Hook kecil untuk mengekspor array objek menjadi file CSV.
+// Cocok untuk mengekspor tabel sederhana dari frontend tanpa dependency tambahan.
+// Usage:
+// const { exportToCSV } = useExportCSV()
+// exportToCSV({ filename: 'pelanggan', data: pelangganData, columns })
 export function useExportCSV() {
   const { message } = App.useApp()
 
@@ -51,7 +56,7 @@ export function useExportCSV() {
       // Create CSV content
       const csvContent = csvRows.join('\n')
       
-      // Create and download file
+      // Create and download file in browser
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
       const link = document.createElement('a')
       const url = URL.createObjectURL(blob)

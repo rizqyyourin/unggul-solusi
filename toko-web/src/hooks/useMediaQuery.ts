@@ -4,6 +4,9 @@ interface UseMediaQueryOptions {
   breakpoint?: number
 }
 
+// Hook kecil untuk deteksi mobile berdasarkan lebar jendela.
+// Mengembalikan { isMobile } yang bisa dipakai untuk merender UI responsif.
+// Default breakpoint: 768px (tablet/mobile)
 export function useMediaQuery({ breakpoint = 768 }: UseMediaQueryOptions = {}) {
   const [isMobile, setIsMobile] = useState(false)
 
